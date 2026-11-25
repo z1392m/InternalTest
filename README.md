@@ -1,7 +1,9 @@
 # InternalTest
 
-Standalone Android Dear ImGui 1.91.6 rendering and touch test for an application under your control. This is a clean test harness based on the ImGui version in the supplied archive; it is not a full source import. It excludes game hooks, ESP, memory patching, generated build files, and prebuilt binaries.
+Standalone Android Dear ImGui 1.91.6 rendering and touch test for an application under your control. This clean harness excludes game hooks, ESP and memory patching.
 
-Build with Java 17, Gradle 8.9, Android SDK 35, NDK 27.2.12479018 and CMake 3.22.1. The pinned upstream ImGui source is fetched by CMake. Run `gradle :app:assembleDebug` or the GitHub Actions workflow.
+## Native-only CI
 
-Install the debug APK and test title bar dragging, sliders, checkboxes, rotation and pause/resume. The native library is designed to be loaded by this app's own JNI activity.
+GitHub Actions builds the release ARM64 JNI shared library directly with CMake, Ninja and Android NDK r27c (API 24, static C++ runtime). The sole artifact is InternalTest-ARM64, containing libinternaltest.so. No Gradle or APK compilation is performed by CI.
+
+The pinned upstream ImGui source is fetched by CMake. The native library requires the matching MainActivity JNI interface (init, resize, frame, touch) and an active OpenGL ES 3 context. Loading the library alone does not create an overlay. The existing standalone app sources remain available for local testing.
